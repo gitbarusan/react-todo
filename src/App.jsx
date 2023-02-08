@@ -1,5 +1,8 @@
 import { useState } from "react";
 import "./styles.css";
+import { InputTodo } from "./Components/InputTodo";
+import { IncompleteTodos } from "./Components/IncompleteTodos";
+import { CompleteTodos } from "./Components/CompleteTodos";
 
 export const App = () => {
   // inputの入力値を格納用
@@ -46,60 +49,18 @@ export const App = () => {
 
   return (
     <>
-      <div className="input-area">
-        {/* 
-        const [todoText,setTodoText] = useState('');
-        <input placeholder="TODOを入力" value={todoText}/>
-        これだと常に空文字が設定されてしまって入力出来ない
-         */}
-        <input
-          placeholder="TODOを入力"
-          value={todoText}
-          onChange={onChangeTodoText}
-        />
-        <button onClick={onClickAdd}>追加</button>
-      </div>
-      <div className="incomplete-area">
-        <p className="title">未完了のTODO</p>
-        <ul>
-          {/* 
-          下記コードを生成したい
-          <div className="list-row">
-            <li>未完了です</li>
-            <button>完了</button>
-            <button>削除</button>
-          </div>         
-          */}
-          {/* mapなどでループしてレンダリングする場合keyの設定を忘れずに */}
-          {incompleteTodos.map((todo, index) => {
-            return (
-              <div key={todo} className="list-row">
-                <li>{todo}</li>
-                <button onClick={() => onClickComplete(index)}>完了</button>
-                {/* 
-                下記のコードだとonClickDelete(index)で関数が実行されてしまう
-                （削除ボタン押下時ではなく、レンダリングで配列分実行
-                <button onClick={onClickDelete(index)}>削除</button>               
-                */}
-                <button onClick={() => onClickDelete(index)}>削除</button>
-              </div>
-            );
-          })}
-        </ul>
-      </div>
-      <div class="complete-area">
-        <p className="title">完了したTODO</p>
-        <ul>
-          {completeTodos.map((todo, index) => {
-            return (
-              <div key={todo} className="list-row">
-                <li>{todo}</li>
-                <button onClick={() => onClickBack(index)}>戻す</button>
-              </div>
-            );
-          })}
-        </ul>
-      </div>
+      {/* InputTodoにpropsで渡す値を設定 */}
+      <InputTodo
+        todoText={todoText}
+        onChange={onChangeTodoText}
+        onClick={onClickAdd}
+      />
+      <IncompleteTodos
+        todos={incompleteTodos}
+        onClickComplete={onClickComplete}
+        onClickDelete={onClickDelete}
+      />
+      <CompleteTodos todos={completeTodos} onClickBack={onClickBack} />
     </>
   );
 };
